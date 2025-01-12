@@ -1,19 +1,16 @@
-import javax.swing.*;
-
 public class App {
-    public static void main(String[] args) throws Exception {
-        int boardWidth = 600;
-        int boardHeight = 600;
+    public static void main(String[] args) {
+        Game game = new Game(10);
 
-        JFrame frame = new JFrame("Game");
-        frame.setVisible(true);
-        frame.setSize(boardWidth, boardHeight);
-        frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        for(int i=0;i<10;i++)
+        {
+            Farmer farmer = new Farmer(game, 3, 3);
+            Thread farmerThread = new Thread(farmer);
+            farmerThread.start();
+        }
 
-    Game game = new Game(boardWidth, boardHeight);
-    frame.add(game);
-    frame.pack();
+        GameVisualiser visualiser = new GameVisualiser(game);
+        Thread visualiserThread = new Thread(visualiser);
+        visualiserThread.start();
     }
 }

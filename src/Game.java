@@ -2,8 +2,8 @@ public class Game {
     private final Tile[][] field;
     private final int size;
 
-    public Game(int size) {
-        this.size = size;
+    public Game() {
+        this.size = SettingsManager.getInt("game.size");
         this.field = new Tile[size][size];
 
         // Initialize the field with Tile objects

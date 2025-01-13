@@ -1,0 +1,2 @@
+game.size=15
+farmer.sleepTime=100

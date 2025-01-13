@@ -6,7 +6,8 @@ public class Tile {
     private boolean isFertile;
     private boolean hasCarrot;
     private boolean isCarrotGrowing;
-    private Entity.EntityType currentEntity;
+    private Entity currentEntity;
+    private Entity.EntityType currentEntityType;
     
     private final ReentrantLock stateLock;
     private final ReentrantLock occupancyLock;
@@ -18,7 +19,7 @@ public class Tile {
         this.isFertile = true;
         this.hasCarrot = false;
         this.isCarrotGrowing = false;
-        this.currentEntity = Entity.EntityType.NONE;
+        this.currentEntityType = Entity.EntityType.NONE;
         this.stateLock = new ReentrantLock();
         this.occupancyLock = new ReentrantLock();
     }
@@ -76,10 +77,11 @@ public class Tile {
         }
     }
 
-    public boolean enterTile(Entity.EntityType entity) {
+    public boolean enterTile(Entity entity) {
         if (occupancyLock.tryLock()) {
             try {
                 this.currentEntity = entity;
+                this.currentEntityType = entity.type;
                 return true;
             } catch (Exception e) {
                 return false;
@@ -92,11 +94,22 @@ public class Tile {
         if (occupancyLock.isHeldByCurrentThread()) {
             stateLock.lock();
             try {
-                this.currentEntity = Entity.EntityType.NONE;
+                this.currentEntityType = Entity.EntityType.NONE;
+                this.currentEntity = null;
             } finally {
                 stateLock.unlock();
             }
             occupancyLock.unlock();
+        }
+    }
+
+    public void lockForInspection() {
+        stateLock.lock();
+    }
+
+    public void unlockForInspection() {
+        if(stateLock.isHeldByCurrentThread()){
+            stateLock.unlock();
         }
     }
 
@@ -129,10 +142,7 @@ public class Tile {
     public void restoreField() {
         stateLock.lock();
         try {
-            Thread.sleep(1500); // Simulate restoration time
             this.isFertile = true;
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
         } finally {
             stateLock.unlock();
         }
@@ -141,7 +151,7 @@ public class Tile {
     private void startGrowingCarrot() {
         new Thread(() -> {
             try {
-                Thread.sleep(5000);
+                Thread.sleep(1000);
                 stateLock.lock();
                 try {
                     this.isCarrotGrowing = false;
@@ -161,10 +171,22 @@ public class Tile {
         }).start();
     }
 
-    public Entity.EntityType getCurrentEntity() {
+    public Entity getCurrentEntity() {
+        if(stateLock.isHeldByCurrentThread()){
+            return this.currentEntity;
+        }
         stateLock.lock();
         try {
             return this.currentEntity;
+        } finally {
+            stateLock.unlock();
+        }
+    }
+
+    public Entity.EntityType getCurrentEntityType() {
+        stateLock.lock();
+        try {
+            return this.currentEntityType;
         } finally {
             stateLock.unlock();
         }

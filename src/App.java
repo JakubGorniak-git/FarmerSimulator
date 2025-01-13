@@ -1,16 +1,27 @@
+import javax.swing.*;
+
 public class App {
     public static void main(String[] args) {
-        Game game = new Game(10);
+        SettingsManager.initialize();
+        Game game = new Game();
 
-        for(int i=0;i<10;i++)
-        {
-            Farmer farmer = new Farmer(game, 3, 3);
-            Thread farmerThread = new Thread(farmer);
-            farmerThread.start();
+        for (int i = 5; i < game.getFieldSize(); i+=100) {
+            new Farmer(game, i, i).runInstance();
+            new Dog(game, i, i).runInstance();
         }
 
+        new RabbitSpawner(game).runInstance();
         GameVisualiser visualiser = new GameVisualiser(game);
-        Thread visualiserThread = new Thread(visualiser);
-        visualiserThread.start();
+
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Game Visualiser");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.add(visualiser);
+            frame.pack();
+            frame.setVisible(true);
+
+            Thread visualiserThread = new Thread(visualiser);
+            visualiserThread.start();
+        });
     }
 }

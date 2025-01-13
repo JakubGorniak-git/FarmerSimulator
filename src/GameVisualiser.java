@@ -1,54 +1,72 @@
-public class GameVisualiser implements Runnable {
-    private final Game game;
+import javax.swing.*;
+import java.awt.*;
 
-    // Constructor to initialize the Game object
+public class GameVisualiser extends JPanel implements Runnable {
+    private final Game game;
+    private final int tileSize = 40;
     public GameVisualiser(Game game) {
         this.game = game;
+        setPreferredSize(new Dimension(game.getFieldSize() * tileSize, game.getFieldSize() * tileSize));
+        setBackground(Color.WHITE);
     }
 
     @Override
     public void run() {
         while (true) {
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
-            printGameGrid(); // Print the updated grid
+            repaint();
             try {
-                Thread.sleep(100); // Refresh every 500 milliseconds
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
     }
 
-    // Method to print the game grid in the console
-    public void printGameGrid() {
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        drawGameGrid(g);
+    }
+
+    private void drawGameGrid(Graphics g) {
         int size = game.getFieldSize();
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                Tile tile = game.getTile(i,j);
-                char tileChar = getTileRepresentation(tile);
-                System.out.print(tileChar + " ");
+                Tile tile = game.getTile(i, j);
+                drawTile(g, tile, i, j);
             }
-            System.out.println();  // Move to the next line after each row
         }
     }
 
-    // Helper method to get the character representation for each tile
-    private char getTileRepresentation(Tile tile) {
-        Entity.EntityType entity = tile.getCurrentEntity();
-        
-        // Check for entities and return appropriate characters
+    private void drawTile(Graphics g, Tile tile, int row, int col) {
+        int x = col * tileSize;
+        int y = row * tileSize;
+    
+        // Determine the color based on the tile's properties
+        Entity.EntityType entity = tile.getCurrentEntityType();
         if (entity == Entity.EntityType.FARMER) {
-            return 'F';
+            g.setColor(new Color(159, 89, 39)); // Farmer
         } else if (entity == Entity.EntityType.RABBIT) {
-            return 'R';
+            g.setColor(Color.WHITE); // Rabbit
         } else if (entity == Entity.EntityType.DOG) {
-            return 'W';
+            g.setColor(Color.BLACK); // Dog
+        } else if (tile.getHasCarrot()) {
+            g.setColor(Color.ORANGE); // Has Carrot
+        } else if (tile.getIsCarrotGrowing()) {
+            g.setColor(new Color(120, 50, 50)); // Is Carrot Growing
         } else if (tile.getIsFertile()) {
-            return '.';
+            g.setColor(new Color(119, 69, 19)); // Fertile land
         } else {
-            return 'D';
+            g.setColor(Color.GREEN); // Non-fertile land
         }
+    
+        // Draw the tile rectangle
+        g.fillRect(x, y, tileSize, tileSize);
+    
+        // Draw grid lines
+        g.setColor(Color.BLACK);
+        g.drawRect(x, y, tileSize, tileSize);
     }
+    
 }

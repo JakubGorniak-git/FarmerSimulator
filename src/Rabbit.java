@@ -1,13 +1,22 @@
-public class Farmer extends Entity{
+public class Rabbit extends Entity{
 
-    public Farmer(Game g, int sx, int sy){
+    public Rabbit(Game g, int sx, int sy){
         this.isAlive=true;
         this.game = g;
         this.posX = sx;
         this.posY = sy;
-        this.type = Entity.EntityType.FARMER;
+        this.type = Entity.EntityType.RABBIT;
     }
+
     
+    public void eatCarrot(){
+        try{
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
     @Override
     public void run(){
         this.currentTile = game.getTile(this.getX(), this.getY());
@@ -15,23 +24,18 @@ public class Farmer extends Entity{
         while(isAlive)
         {
             try{
-                Thread.sleep(SettingsManager.getInt("farmer.sleepTime"));
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;
             }
-            if(currentTile.getIsFertile()==false){
-                try{
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-                currentTile.restoreField();
-            }
-            if(currentTile.getHasCarrot()==false && currentTile.getIsCarrotGrowing()==false){
+            if(currentTile.getHasCarrot()==true){
                 // System.out.println("planting a carrot");
-                currentTile.plantCarrot();
+                this.eatCarrot();
+                if(isAlive)
+                {
+                    currentTile.removeCarrot();
+                }
             }
             else{
                 int [][] directions = this.randomDirections();

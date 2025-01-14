@@ -11,7 +11,7 @@ public class Rabbit extends Entity{
     
     public void eatCarrot(){
         try{
-            Thread.sleep(10000);
+            Thread.sleep(SettingsManager.getInt("rabbit.eatingTime"));
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -24,7 +24,7 @@ public class Rabbit extends Entity{
         while(isAlive)
         {
             try{
-                Thread.sleep(100);
+                Thread.sleep(SettingsManager.getInt("rabbit.runTime"));
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;

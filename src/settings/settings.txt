@@ -1,2 +1,6 @@
 game.size=15
-farmer.sleepTime=100
+farmer.sleepTime=500
+rabbit.runTime=500
+rabbit.eatingTime=500
+dog.sight=5
+dog.sleepTime=500

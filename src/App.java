@@ -14,7 +14,7 @@ public class App {
         GameVisualiser visualiser = new GameVisualiser(game);
 
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Game Visualiser");
+            JFrame frame = new JFrame("Farming simulation");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.add(visualiser);
             frame.pack();

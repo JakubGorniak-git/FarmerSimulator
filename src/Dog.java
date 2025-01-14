@@ -36,7 +36,7 @@ public class Dog extends Entity{
         this.game = g;
         this.posX = sx;
         this.posY = sy;
-        this.sight = 5;
+        this.sight = SettingsManager.getInt("dog.sight");
         this.hasTarget=false;
         this.type = Entity.EntityType.DOG;
     }
@@ -49,7 +49,7 @@ public class Dog extends Entity{
         {
             System.out.println("isalivee");
             try{
-                Thread.sleep(100);
+                Thread.sleep(SettingsManager.getInt("dog.sleepTime"));
             } catch (InterruptedException e) {
                 destroy();
                 break;

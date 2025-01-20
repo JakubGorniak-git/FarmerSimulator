@@ -17,7 +17,7 @@ public class Dog extends Entity{
     
                     if (game.isValidPosition(x, y) && distance>Math.abs(dx)+Math.abs(dy)) {
                         Entity entity = game.getTile(x, y).getCurrentEntity();
-                        System.err.println(entity);
+                        // System.err.println(entity);
                         if (entity!=null && entity.type==Entity.EntityType.RABBIT) {
                             targetEntity = entity;
                             distance = Math.abs(dx)+Math.abs(dy);

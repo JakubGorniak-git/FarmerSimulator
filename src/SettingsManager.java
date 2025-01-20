@@ -41,25 +41,8 @@ public class SettingsManager {
         }
     }
 
-    static public String getSetting(String key) {
-        return instance.settings.get(key);
-    }
-
-    static public int getInt(String key){
+    static public int getInt(String key) {
         System.err.println(key);
         return Integer.parseInt(instance.settings.get(key));
-    }
-
-    public String getSetting(String key, String defaultValue) {
-        return instance.settings.getOrDefault(key, defaultValue);
-    }
-
-    public boolean hasKey(String key) {
-        return instance.settings.containsKey(key);
-    }
-
-    public void reloadSettings() {
-        settings.clear();
-        loadSettings();
     }
 }

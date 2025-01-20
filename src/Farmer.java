@@ -30,7 +30,7 @@ public class Farmer extends Entity{
                 currentTile.restoreField();
             }
             if(currentTile.getHasCarrot()==false && currentTile.getIsCarrotGrowing()==false){
-                // System.out.println("planting a carrot");
+                System.out.println("planting a carrot");
                 currentTile.plantCarrot();
             }
             else{

@@ -47,7 +47,7 @@ public class Dog extends Entity{
         this.currentTile.enterTile(this);
         while(isAlive)
         {
-            System.out.println("isalivee");
+            //System.out.println("isalivee");
             try{
                 Thread.sleep(SettingsManager.getInt("dog.sleepTime"));
             } catch (InterruptedException e) {

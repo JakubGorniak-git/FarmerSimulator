@@ -1,6 +1,7 @@
-game.size=15
+game.size=20
 farmer.sleepTime=500
-rabbit.runTime=500
-rabbit.eatingTime=500
+rabbit.runTime=100
+rabbit.eatingTime=100
 dog.sight=5
 dog.sleepTime=500
+carrot.growingTime = 5000

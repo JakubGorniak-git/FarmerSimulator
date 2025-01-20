@@ -103,16 +103,6 @@ public class Tile {
         }
     }
 
-    public void lockForInspection() {
-        stateLock.lock();
-    }
-
-    public void unlockForInspection() {
-        if(stateLock.isHeldByCurrentThread()){
-            stateLock.unlock();
-        }
-    }
-
     public void plantCarrot() {
         stateLock.lock();
         try {
@@ -151,7 +141,7 @@ public class Tile {
     private void startGrowingCarrot() {
         new Thread(() -> {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(SettingsManager.getInt("carrot.growingTime"));
                 stateLock.lock();
                 try {
                     this.isCarrotGrowing = false;

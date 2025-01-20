@@ -5,7 +5,7 @@ public class App {
         SettingsManager.initialize();
         Game game = new Game();
 
-        for (int i = 5; i < game.getFieldSize(); i+=100) {
+        for (int i = 5; i < game.getFieldSize(); i+=5) {
             new Farmer(game, i, i).runInstance();
             new Dog(game, i, i).runInstance();
         }

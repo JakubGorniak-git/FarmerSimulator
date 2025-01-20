@@ -21,16 +21,13 @@ public class GameVisualiser extends JPanel implements Runnable {
     }
 
     private void loadTextures() {
-        String[] textureNames = {
-                "farmer", "rabbit", "dog", "carrot", "growing_carrot", "fertile_land", "grass"
-        };
-
+        String[] textureNames = { "farmer", "rabbit", "dog", "carrot", "growing_carrot", "dirt", "grass"};
         for (String name : textureNames) {
             try {
                 BufferedImage image = ImageIO.read(new File("src/textures/" + name + ".png"));
                 textures.put(name, scaleImage(image, tileSize, tileSize));
             } catch (IOException e) {
-                System.err.println("Could not load texture: " + name);
+                System.err.println("Cannot load texture: " + name);
             }
         }
     }
@@ -78,9 +75,12 @@ public class GameVisualiser extends JPanel implements Runnable {
         int x = col * tileSize;
         int y = row * tileSize;
 
-        BufferedImage backgroundTexture = tile.getIsFertile()
-                ? textures.get("grass")
-                : textures.get("fertile_land");
+        BufferedImage backgroundTexture;
+        if (tile.getIsFertile()) {
+            backgroundTexture = textures.get("grass");
+        } else {
+            backgroundTexture = textures.get("dirt");
+        }
 
         if (backgroundTexture != null) {
             g.drawImage(backgroundTexture, x, y, null);

@@ -22,7 +22,7 @@ public class Farmer extends Entity{
             }
             if(currentTile.getIsFertile()==false){
                 try{
-                    Thread.sleep(100);
+                    Thread.sleep(SettingsManager.getInt("farmer.repairTime"));
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;

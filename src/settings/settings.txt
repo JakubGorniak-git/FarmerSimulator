@@ -1,5 +1,6 @@
 game.size=20
 farmer.sleepTime=500
+farmer.repairTime=200
 rabbit.runTime=100
 rabbit.eatingTime=100
 dog.sight=5
